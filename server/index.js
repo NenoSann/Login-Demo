@@ -2,7 +2,24 @@ const express = require('express');
 const cors = require('cors');
 const redis = require('redis');
 
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+    socket: {
+        host: '47.108.220.227',
+        port: '6379',
+    },
+    password: '2440060505'
+});
+
+(async () => {
+    await redisClient.connect();
+})();
+
+redisClient.on('err', err => {
+    console.log('redis client error:', err);
+});
+redisClient.on('connect', () => {
+    console.log('redis client connect.');
+})
 const app = express();
 
 let port = 3000
@@ -23,20 +40,13 @@ app.post('/', (req, res) => {
 
 app.listen(port, () => console.log(`listening to port ${port}`));
 
-
-
-
-redisClient.on('err', err => {
-    console.warn('redis client error:', err);
-});
-
-function redisConnect() {
-    try {
-        redisClient.connect(6379, '127.0.0.1');
-        console.log('redis connect successfully');
-    } catch (redisConnectError) {
-        console.warn(redisConnectError);
-    }
-};
-redisConnect();
-redisClient.ping("Are you there?");
+(async () => {
+    await redisClient.ACL_LIST().then(
+        (value) => {
+            console.log(value);
+        },
+        (err) => {
+            console.log(err);
+        }
+    );
+})();

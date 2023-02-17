@@ -1,7 +1,11 @@
-const redis = require('redis');
-const redisClient = redis.createClient({
-    socket: {
-        host: '127.0.0.1',
-        port: '6379',
-    },
-});
+import { createClient } from 'redis';
+
+const client = createClient();
+
+client.on('error', err => console.log('Redis Client Error', err));
+
+await client.connect();
+
+await client.set('key', 'value');
+const value = await client.get('key');
+await client.disconnect();
