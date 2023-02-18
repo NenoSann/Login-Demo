@@ -1,6 +1,6 @@
 # LoginDemo
 
-This template should help get you started developing with Vue 3 in Vite.
+This demo using Vue.js to build the frontend page, and node.js+redis to build the server side. This page will store your input data and send to redis server and store them.
 
 ## Recommended IDE Setup
 
@@ -14,11 +14,16 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ```sh
 npm install
+cd server
+npm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
+cd server
+node index
+cd ..
 npm run dev
 ```
 
